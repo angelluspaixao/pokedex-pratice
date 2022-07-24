@@ -1,3 +1,4 @@
+const MAXPOKEMON = 650;
 const initialPokemon = Math.floor(Math.random() * (649 - 1 + 1)) + 1;
 let searchPokemon = initialPokemon;
 
@@ -21,30 +22,37 @@ const fetchPokemon = async (pokemon) => {
 }
 
 const renderPokemon = async (pokemon) => {
-    pokemonName.innerHTML = 'Loading...';
-    pokemonNumber.innerHTML = '';
-    pokemonImage.src = '../images/loading.gif'
+    renderLoading();
 
     const data = await fetchPokemon(pokemon);
 
-    if (data) {
+    if (data && data.id < MAXPOKEMON) {
         pokemonNumber.innerHTML = data.id + ' -';
         pokemonName.innerHTML = data.name;
-        pokemonImage.style.display = 'block'
+        pokemonImage.style.display = 'block';
         pokemonImage.src = data.sprites.versions['generation-v']['black-white'].animated.front_default;
 
         searchPokemon = data.id;
         input.value = '';
     } else {
-        pokemonName.innerHTML = 'Mon not found'
-        pokemonNumber.innerHTML = '';
-        pokemonImage.style.display = 'none'
+        renderPokemonNotFound()
     }
+}
+
+const renderLoading = () => {
+    pokemonName.innerHTML = 'Loading...';
+    pokemonNumber.innerHTML = '';
+    pokemonImage.src = '../images/loading.gif'
+}
+
+const renderPokemonNotFound = () => {
+    pokemonName.innerHTML = 'Mon not found'
+    pokemonNumber.innerHTML = '';
+    pokemonImage.style.display = 'none'
 }
 
 form.addEventListener('submit', (event) => {
     event.preventDefault();
-
     renderPokemon(input.value);
 })
 
@@ -54,7 +62,7 @@ buttonPrev.addEventListener('click', () => {
 });
 
 buttonNext.addEventListener('click', () => {
-    if (searchPokemon < 649) searchPokemon++
+    if (searchPokemon < MAXPOKEMON - 1) searchPokemon++
     renderPokemon(searchPokemon)
 });
 
