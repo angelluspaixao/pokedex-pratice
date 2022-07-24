@@ -23,6 +23,7 @@ const fetchPokemon = async (pokemon) => {
 const renderPokemon = async (pokemon) => {
     pokemonName.innerHTML = 'Loading...';
     pokemonNumber.innerHTML = '';
+    pokemonImage.src = '../images/loading.gif'
 
     const data = await fetchPokemon(pokemon);
 
@@ -30,7 +31,7 @@ const renderPokemon = async (pokemon) => {
         pokemonNumber.innerHTML = data.id + ' -';
         pokemonName.innerHTML = data.name;
         pokemonImage.style.display = 'block'
-        pokemonImage.src = data['sprites']['versions']['generation-v']['black-white']['animated']['front_default'];
+        pokemonImage.src = data.sprites.versions['generation-v']['black-white'].animated.front_default;
 
         searchPokemon = data.id;
         input.value = '';
