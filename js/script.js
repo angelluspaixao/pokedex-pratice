@@ -35,7 +35,7 @@ const renderPokemon = async (pokemon) => {
         searchPokemon = data.id;
         input.value = '';
     } else {
-        renderPokemonNotFound()
+        renderNotFound()
     }
 }
 
@@ -45,8 +45,8 @@ const renderLoading = () => {
     pokemonImage.src = '../images/loading.gif'
 }
 
-const renderPokemonNotFound = () => {
-    pokemonName.innerHTML = 'Mon not found'
+const renderNotFound = () => {
+    pokemonName.innerHTML = 'Pokémon not found'
     pokemonNumber.innerHTML = '';
     pokemonImage.style.display = 'none'
 }
