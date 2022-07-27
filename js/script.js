@@ -1,6 +1,7 @@
 const MAXPOKEMON = 650;
 const initialPokemon = Math.floor(Math.random() * (649 - 1 + 1)) + 1;
 let searchPokemon = initialPokemon;
+let currentSprite = 0;
 
 const pokemonName = document.querySelector('.pokemon__name');
 const pokemonNumber = document.querySelector('.pokemon__number');
@@ -24,13 +25,14 @@ const fetchPokemon = async (pokemon) => {
 const renderPokemon = async (pokemon) => {
     renderLoading();
 
-    const data = await fetchPokemon(pokemon);
+    data = await fetchPokemon(pokemon);
 
     if (data && data.id < MAXPOKEMON) {
         pokemonNumber.innerHTML = data.id + ' -';
         pokemonName.innerHTML = data.name;
         pokemonImage.style.display = 'block';
         pokemonImage.src = data.sprites.versions['generation-v']['black-white'].animated.front_default;
+        currentSprite = 0;
 
         searchPokemon = data.id;
         input.value = '';
@@ -42,7 +44,7 @@ const renderPokemon = async (pokemon) => {
 const renderLoading = () => {
     pokemonName.innerHTML = 'Loading...';
     pokemonNumber.innerHTML = '';
-    pokemonImage.src = '../images/loading.gif'
+    pokemonImage.src = '../images/loading.gif';
 }
 
 const renderNotFound = () => {
@@ -64,6 +66,18 @@ buttonPrev.addEventListener('click', () => {
 buttonNext.addEventListener('click', () => {
     if (searchPokemon < MAXPOKEMON - 1) searchPokemon++
     renderPokemon(searchPokemon)
+});
+
+pokemonImage.addEventListener('click', () => {
+    //if([pokemonImage.src].find())
+    if(currentSprite === 0) {
+        currentSprite = 1;
+        pokemonImage.src = data.sprites.versions['generation-v']['black-white'].animated.back_default;
+    } else {
+        currentSprite = 0;
+        pokemonImage.src = data.sprites.versions['generation-v']['black-white'].animated.front_default;
+    }
+    console.log(pokemonImage.src)
 });
 
 renderPokemon(searchPokemon);
