@@ -1,4 +1,4 @@
-import loading from '../images/loading.gif';
+//import loading from '../images/loading.gif';
 
 const MAXPOKEMON = 650;
 const initialPokemon = Math.floor(Math.random() * (649 - 1 + 1)) + 1;
@@ -46,7 +46,7 @@ const renderPokemon = async (pokemon) => {
 const renderLoading = () => {
     pokemonName.innerHTML = 'Loading...';
     pokemonNumber.innerHTML = '';
-    pokemonImage.src = loading;
+    pokemonImage.src = '../images/loading.gif';
 }
 
 const renderNotFound = () => {
@@ -71,7 +71,8 @@ buttonNext.addEventListener('click', () => {
 });
 
 pokemonImage.addEventListener('click', () => {
-    //if([pokemonImage.src].find())
+    //TO-DO: Mudar sprites usando .includes() para verificar sprite atual
+    //if([pokemonImage.src].includes())
     if(currentSprite === 0) {
         currentSprite = 1;
         pokemonImage.src = data.sprites.versions['generation-v']['black-white'].animated.back_default;
