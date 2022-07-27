@@ -1,3 +1,5 @@
+import loading from '../images/loading.gif';
+
 const MAXPOKEMON = 650;
 const initialPokemon = Math.floor(Math.random() * (649 - 1 + 1)) + 1;
 let searchPokemon = initialPokemon;
@@ -44,7 +46,7 @@ const renderPokemon = async (pokemon) => {
 const renderLoading = () => {
     pokemonName.innerHTML = 'Loading...';
     pokemonNumber.innerHTML = '';
-    pokemonImage.src = '../images/loading.gif';
+    pokemonImage.src = loading;
 }
 
 const renderNotFound = () => {
