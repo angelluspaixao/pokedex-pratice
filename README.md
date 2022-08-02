@@ -24,4 +24,4 @@ PokéDex pratice based on [Manual do Dev's project](https://github.com/manualdod
 ## Things that I learned
 ### CSS
 - `clamp()` function
-- Double `box- shadow` possibility
+- Double `box-shadow` possibility
