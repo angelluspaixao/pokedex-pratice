@@ -80,7 +80,7 @@ pokemonImage.addEventListener('click', () => {
         currentSprite = 0;
         pokemonImage.src = data.sprites.versions['generation-v']['black-white'].animated.front_default;
     }
-    console.log(pokemonImage.src)
+    //console.log(pokemonImage.src)
 });
 
 renderPokemon(searchPokemon);
