@@ -42,7 +42,7 @@ const renderPokemon = async (pokemon) => {
 const renderLoading = () => {
     pokemonName.innerHTML = 'Loading...';
     pokemonNumber.innerHTML = '';
-    pokemonImage.src = '../images/loading.gif'
+    pokemonImage.src = `https://i.imgur.com/sRqDtqD.gif`;
 }
 
 const renderNotFound = () => {
