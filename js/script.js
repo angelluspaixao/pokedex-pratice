@@ -12,7 +12,9 @@ const initialPokemon = Math.floor(Math.random() * (MAXPOKEMON)) + 1;
 const pokeballStyles = ['pokeball', 'masterball', 'greatball', 'ultraball'];
 let searchPokemonId = initialPokemon;
 let currentSprite = 0;
+let isShiny = false;
 let lastRenderedData = null;
+let data;
 
 const applyRandomTitlePalette = () => {
     if (!title) return;
@@ -24,13 +26,48 @@ const applyRandomTitlePalette = () => {
 
 const fetchPokemon = async (pokemon) => {
     if (typeof pokemon === 'string') pokemon = pokemon.toLowerCase();
-    const APIResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`);
 
-    if (APIResponse.status === 200) {
-        const data = await APIResponse.json();
-        return data
+    try {
+        const APIResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`);
+
+        if (!APIResponse.ok) {
+            return null;
+        }
+
+        return await APIResponse.json();
+    } catch (error) {
+        console.error('Error fetching Pokémon:', error);
+        return null;
     }
-}
+};
+
+const getSpriteCandidates = (pokemonData, { shiny = false, back = false } = {}) => {
+    const sprites = pokemonData?.sprites;
+    if (!sprites) return [];
+
+    const options = [
+        sprites?.versions?.['generation-v']?.['black-white']?.animated?.[back ? (shiny ? 'back_shiny' : 'back_default') : (shiny ? 'front_shiny' : 'front_default')],
+        sprites?.versions?.['generation-v']?.['black-white']?.[back ? (shiny ? 'back_shiny' : 'back_default') : (shiny ? 'front_shiny' : 'front_default')],
+        sprites?.[back ? (shiny ? 'back_shiny' : 'back_default') : (shiny ? 'front_shiny' : 'front_default')],
+        sprites?.other?.['official-artwork']?.[shiny ? 'front_shiny' : 'front_default'],
+        sprites?.other?.dream_world?.[shiny ? 'front_shiny' : 'front_default'],
+        sprites?.other?.home?.[shiny ? 'front_shiny' : 'front_default'],
+    ];
+
+    const uniqueOptions = [...new Set(options.filter(Boolean))];
+    return uniqueOptions;
+};
+
+const getCurrentSpriteSource = () => {
+    if (!lastRenderedData) return null;
+
+    const spriteOptions = getSpriteCandidates(lastRenderedData, {
+        shiny: isShiny,
+        back: currentSprite === 1,
+    });
+
+    return spriteOptions[0] || null;
+};
 
 const fitPokemonData = () => {
     if (!pokemonData) return;
@@ -49,16 +86,17 @@ const renderPokemon = async (pokemon) => {
 
     data = await fetchPokemon(pokemon);
 
-    if (data && data.id <= MAXPOKEMON) {
+    if (data && Number(data.id) <= MAXPOKEMON) {
         lastRenderedData = data;
         currentSprite = 0;
-        searchPokemonId = data.id;
+        isShiny = false;
+        searchPokemonId = Number(data.id);
         input.value = '';
-        renderPokemonData(data.sprites.versions['generation-v']['black-white'].animated.front_default);
+        renderPokemonData(getCurrentSpriteSource());
     } else {
-        renderNotFound()
+        renderNotFound();
     }
-}
+};
 
 const renderLoading = () => {
     pokemonName.innerHTML = 'Loading...';
@@ -75,12 +113,18 @@ const renderNotFound = () => {
 }
 
 const renderPokemonData = (imageSrc) => {
-    pokemonNumber.innerHTML = data.id + ' -';
-    pokemonName.innerHTML = data.name;
+    if (!data) return;
+
+    const pokemonId = Number(data.id) || '';
+    const pokemonNameValue = data.name || 'Pokémon';
+    const fallbackSprite = getSpriteCandidates(data, { shiny: isShiny, back: currentSprite === 1 })[0];
+
+    pokemonNumber.innerHTML = pokemonId ? `${pokemonId} -` : '';
+    pokemonName.innerHTML = pokemonNameValue;
     pokemonImage.style.display = 'block';
-    pokemonImage.src = imageSrc || data.sprites.versions['generation-v']['black-white'].animated.front_default;
+    pokemonImage.src = imageSrc || fallbackSprite || 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png';
     fitPokemonData();
-}
+};
 
 form.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -97,16 +141,17 @@ buttonNext.addEventListener('click', () => {
     renderPokemon(searchPokemonId)
 });
 
-pokemonImage.addEventListener('click', () => {
-    renderLoading();
+pokemonImage.addEventListener('click', (event) => {
     if (!lastRenderedData) return;
-    if (currentSprite === 0) {
-        currentSprite = 1;
-        renderPokemonData(lastRenderedData.sprites.versions['generation-v']['black-white'].animated.back_default);
-    } else {
-        currentSprite = 0;
-        renderPokemonData(lastRenderedData.sprites.versions['generation-v']['black-white'].animated.front_default);
+
+    if (event.shiftKey) {
+        isShiny = !isShiny;
+        renderPokemonData(getCurrentSpriteSource());
+        return;
     }
+
+    currentSprite = currentSprite === 0 ? 1 : 0;
+    renderPokemonData(getCurrentSpriteSource());
 });
 
 applyRandomTitlePalette();
