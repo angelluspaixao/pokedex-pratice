@@ -1,27 +1,69 @@
-# PokéDex Pratice
+# Pokedex Pratice
 
-PokéDex pratice based on [Manual do Dev's project](https://github.com/manualdodev/pokedex), using HTML, CSS and JS, consuming [PokéAPI v2](https://pokeapi.co/docs/v2)
+## Visão Geral
 
-## Things that I praticed
-### Javascript
-- `querySelector` use
-- Native API `fetch()` use
-- Native API response handle
-- `async` ~ `await` promise use
-- `addEventListener` use
-- API consume
-- Data manipulation
-### CSS
-- Class use
-- State selection
-- Absolute position
-- Relative values
-- Border and shadow use
-### HTML
-- Class use
-- Imports, images and unicode use
+Uma aplicação web interativa de Pokédex que permite pesquisar, navegar e visualizar detalhes de Pokémon. O projeto consome a PokeAPI para exibir informações dos primeiros 649 Pokémon (até a 5ª geração, dos jogos Black/White e Black 2/White 2), com navegação por setas, busca por nome/número e visualização de sprites animados frontais e traseiros.
 
-## Things that I learned
-### CSS
-- `clamp()` function
-- Double `box-shadow` possibility
+## Objetivo
+
+Projeto de prática para demonstração de consumo de APIs externas, manipulação DOM e interações de frontend. Serve como exemplo de aplicação com cliente leve sem dependências de build complexas.
+
+## Pré-requisitos
+
+- Navegador web moderno (Chromium, Firefox, Safari)
+- Conexão com internet para consumo da [PokeAPI](https://pokeapi.co)
+
+## Instalação
+
+Nenhuma instalação necessária. Basta abrir o `index.html` em um navegador ou hospedar os arquivos em qualquer servidor web estático.
+
+```bash
+# Para visualizar localmente
+open index.html
+# ou arraste o arquivo para o navegador
+```
+
+## Como Rodar Localmente
+
+1. Clone o repositório ou baixe os arquivos
+2. Abra o `index.html` em seu navegador
+3. Ou utilize a extensão "Live Server" VS Code para preview
+
+## Build e Validação
+
+Este projeto não possui etapa de build formal. Os arquivos JavaScript e CSS são entregues como fonte. Para validação verifique se os elementos HTML estão corretos no DOM.
+
+## Conteinerização
+
+Não aplicável. Este é um projeto de frontend estático sem configuração Docker.
+
+## Deploy
+
+Não há processo de deploy automatizado definido neste projeto. Como aplicação de frontend estático, pode ser implantado em:
+
+- GitHub Pages
+- Vercel
+- Netlify
+
+## Troubleshooting
+
+| Problema | Solução |
+|----------|---------|
+
+| Pokémon não carrega | Verifique a conexão com internet, a PokeAPI pode estar temporariamente indisponível |
+| Botões não funcionam | Recarregue a página, o Pokémon inicial é escolhido aleatoriamente |
+| Gradiente do título não aparece | A classe aleatória é aplicada automaticamente ao carregar |
+| Erro CORS | Este projeto consome API pública sem configuração CORS específica |
+
+## Contribuição
+
+Sinta-se à vontade para fork este projeto e abrir issues com melhorias ou correções. Áreas para expansão futura:
+
+- Adicionar mais sprites e animações
+- Implementar filtros (por tipo, estágio evolutivo, geraçao)
+- Adicionar informações de stats de Pokémon
+- Suporte a modo escuro
+
+---
+
+*Projeto de prática com foco em consumo de APIs e manipulação do DOM.*
