@@ -84,7 +84,7 @@ main {
     letter-spacing: 0.02em;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow: clip;
 }
 
 @media (max-width: 420px) {

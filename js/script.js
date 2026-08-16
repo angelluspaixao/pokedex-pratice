@@ -78,9 +78,10 @@ const resolvePokemonByQuery = async (pokemon) => {
 
     const directPokemon = await fetchPokemon(query);
     if (directPokemon) {
+        const speciesName = directPokemon.species?.name || directPokemon.name;
         return {
             pokemon: directPokemon,
-            species: await fetchPokemonSpecies(directPokemon.name),
+            species: await fetchPokemonSpecies(speciesName),
         };
     }
 
@@ -136,12 +137,22 @@ const getCurrentSpriteSource = () => {
 const fitPokemonData = () => {
     if (!pokemonData) return;
 
-    let fontSize = 24;
-    pokemonData.style.fontSize = `${fontSize}px`;
+    const maxFontSize = 24;
+    const minFontSize = 10;
 
-    while (pokemonData.scrollWidth > pokemonData.clientWidth && fontSize > 10) {
+    pokemonData.style.fontSize = `${maxFontSize}px`;
+    pokemonData.style.textOverflow = 'clip';
+    pokemonData.style.whiteSpace = 'nowrap';
+    pokemonData.style.overflow = 'hidden';
+
+    let fontSize = maxFontSize;
+    while (pokemonData.scrollWidth > pokemonData.clientWidth && fontSize > minFontSize) {
         fontSize -= 1;
         pokemonData.style.fontSize = `${fontSize}px`;
+    }
+
+    if (pokemonData.scrollWidth > pokemonData.clientWidth) {
+        pokemonData.style.textOverflow = 'ellipsis';
     }
 };
 
