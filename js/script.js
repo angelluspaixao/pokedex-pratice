@@ -6,10 +6,9 @@ const pokemonName = document.querySelector('.pokemon__name');
 const pokemonNumber = document.querySelector('.pokemon__number');
 const pokemonImage = document.querySelector('.pokemon__image');
 const pokemonData = document.querySelector('.pokemon__data');
-const title = document.querySelector('.title');
+const titleIcon = document.querySelector('.title__icon');
 const MAXPOKEMON = 649;
 const initialPokemon = Math.floor(Math.random() * (MAXPOKEMON)) + 1;
-const pokeballStyles = ['pokeball', 'masterball', 'greatball', 'ultraball'];
 let searchPokemonId = initialPokemon;
 let currentSprite = 0;
 let isShiny = false;
@@ -18,12 +17,37 @@ let data;
 let currentSpecies = null;
 let currentFormIndex = 0;
 
-const applyRandomTitlePalette = () => {
-    if (!title) return;
+const loadTitleItemIcon = async () => {
+    if (!titleIcon) return;
 
-    const randomStyle = pokeballStyles[Math.floor(Math.random() * pokeballStyles.length)];
-    title.classList.remove('pokeball', 'masterball', 'greatball', 'ultraball');
-    title.classList.add(randomStyle);
+    try {
+        const categoryResponse = await fetch('https://pokeapi.co/api/v2/item-category/standard-balls');
+        if (!categoryResponse.ok) throw new Error('Failed to load item category');
+
+        const categoryData = await categoryResponse.json();
+        const items = categoryData?.items || [];
+        if (!items.length) return;
+
+        const randomItem = items[Math.floor(Math.random() * items.length)];
+        const itemResponse = await fetch(randomItem.url);
+        if (!itemResponse.ok) throw new Error('Failed to load item');
+
+        const itemData = await itemResponse.json();
+        const spriteUrl = itemData?.sprites?.default || itemData?.sprites?.['default'];
+
+        if (spriteUrl) {
+            titleIcon.src = spriteUrl;
+            titleIcon.alt = itemData.name || 'item icon';
+            titleIcon.hidden = false;
+            return;
+        }
+    } catch (error) {
+        console.error('Error loading title icon:', error);
+    }
+
+    titleIcon.src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png';
+    titleIcon.alt = 'Poké Ball';
+    titleIcon.hidden = false;
 };
 
 const normalizePokemonQuery = (pokemon) => {
@@ -297,5 +321,5 @@ pokemonImage.addEventListener('click', async (event) => {
     renderPokemonData(getCurrentSpriteSource());
 });
 
-applyRandomTitlePalette();
+loadTitleItemIcon();
 renderPokemon(searchPokemonId);
