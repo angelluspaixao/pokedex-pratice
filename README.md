@@ -23,11 +23,21 @@ open index.html
 # ou arraste o arquivo para o navegador
 ```
 
-## Como Rodar Localmente
+## Configuração do Ambiente Local
+
+Este é um projeto frontend estático. Para rodar localmente:
 
 1. Clone o repositório ou baixe os arquivos
-2. Abra o `index.html` em seu navegador
-3. Ou utilize a extensão "Live Server" VS Code para preview
+2. Abra o `index.html` diretamente no navegador
+3. Ou utilize a extensão "Live Server" VS Code para preview com recarga automática
+
+## Como utilizar
+
+1. Utilize o campo de busca para digitar o nome ou número do Pokémon
+2. Use as botões para navegar entre Pokémon anteriores e próximos
+3. Clique no Pokémon para alternar entre sprites frontais e traseiros
+4. Pressione `Shift` + clique para alternar entre sprites *shiny* e padrão
+5. Pressione `Alt` + clique para alternar entre formas alternativas do Pokémon (se houver)
 
 ## Build e Validação
 
@@ -60,7 +70,7 @@ Não há processo de deploy automatizado definido neste projeto. Como aplicaçã
 Sinta-se à vontade para fork este projeto e abrir issues com melhorias ou correções. Áreas para expansão futura:
 
 - Adicionar mais sprites e animações
-- Implementar filtros (por tipo, estágio evolutivo, geraçao)
+- Implementar filtros (por tipo, estágio evolutivo, geração)
 - Adicionar informações de stats de Pokémon
 - Suporte a modo escuro
 
